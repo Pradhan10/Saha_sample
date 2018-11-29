@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "ibm@security.com:grameen", "admin@saha.com:sahakarita"
+            "bank@dailycollection.com:admin", "admin@saha.com:sahakarita"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -334,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(LoginActivity.this, DetailActivity.class));
+                startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

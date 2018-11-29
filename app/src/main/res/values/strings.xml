@@ -16,4 +16,8 @@
     <string name="title_activity_detail">DetailActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Welcome, admin. The transactions are : "
+    </string>
 </resources>
