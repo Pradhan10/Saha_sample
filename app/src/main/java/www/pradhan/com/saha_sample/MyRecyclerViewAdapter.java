@@ -20,6 +20,8 @@
 
 package www.pradhan.com.saha_sample;
 
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,23 +31,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private static MyClickListener myClickListener;
-    private ArrayList<Agent> mDataset;
 
-    public MyRecyclerViewAdapter(ArrayList<Agent> myDataset) {
-        mDataset = myDataset;
+
+    private Cursor mCurser;
+
+    MyRecyclerViewAdapter(Cursor cursor) {
+
+        this.mCurser = cursor;
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
+    void setOnItemClickListener(MyClickListener myClickListener) {
         MyRecyclerViewAdapter.myClickListener = myClickListener;
     }
 
+    @NonNull
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
@@ -56,26 +60,33 @@ public class MyRecyclerViewAdapter extends RecyclerView
         return dataObjectHolder;
     }
 
+
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getName());
-        holder.dateTime.setText(mDataset.get(position).getAge());
-        holder.agentPic.setImageResource(mDataset.get(position).getPhotoId());
+    public void onBindViewHolder(@NonNull DataObjectHolder holder, int position) {
+
+        if (!mCurser.moveToPosition(position)) {
+            return;
+        }
+        holder.label.setText(mCurser.getString(1));
+        holder.dateTime.setText(mCurser.getString(3));
+        holder.agentPic.setImageResource(R.drawable.agent1);
     }
 
     public void addItem(Agent dataObj, int index) {
-        mDataset.add(index, dataObj);
+        /*        mDataset.add(index, dataObj);*/
         notifyItemInserted(index);
     }
 
     public void deleteItem(int index) {
+/*
         mDataset.remove(index);
+*/
         notifyItemRemoved(index);
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mCurser.getCount();
     }
 
     public interface MyClickListener {
@@ -89,7 +100,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         TextView dateTime;
         ImageView agentPic;
 
-        public DataObjectHolder(View itemView) {
+        DataObjectHolder(View itemView) {
             super(itemView);
             label = itemView.findViewById(R.id.textView);
             dateTime = itemView.findViewById(R.id.textView2);
